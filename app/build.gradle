@@ -1,0 +1,70 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "br.com.ramonilho.toastapp"
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    productFlavors {
+        regular {
+        }
+        demo {
+            applicationIdSuffix ".demo"
+        }
+        toaster {
+            applicationId "br.com.ramonilho.toaster"
+            versionName "1.0.0"
+            versionCode 1
+        }
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("../.sign/app.keystore")
+            storePassword "storePsasword"
+            keyAlias "keyAlias"
+            keyPassword "keyPassword"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField("boolean", "REPORT_CRASH", "true")
+        }
+        homolog {
+            signingConfig signingConfigs.release
+            buildConfigField("boolean", "REPORT_CRASH", "true")
+        }
+        debug {
+            signingConfig signingConfigs.release
+            buildConfigField("boolean", "REPORT_CRASH", "false")
+        }
+    }
+
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:' + SUPPORT_GOOGLE_VERSION
+    compile 'br.com.ramonilho:androidLibTest:0.0.1'
+    testCompile 'junit:junit:4.12'
+}
+
+repositories {
+    maven {
+        url "file:///C:/rep/"
+    }
+}
